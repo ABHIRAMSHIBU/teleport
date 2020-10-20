@@ -488,9 +488,9 @@ func (s *Service) Configured() bool {
 }
 
 // Enabled determines if a given "_service" section has been set to 'true'
-func (s *Service) Enabled() bool {
+func (s *Service) Enabled(def bool) bool {
 	if s.EnabledFlag == "" {
-		return true
+		return def
 	}
 	v, err := utils.ParseBool(s.EnabledFlag)
 	if err != nil {
@@ -500,8 +500,11 @@ func (s *Service) Enabled() bool {
 }
 
 // Disabled returns 'true' if the service has been deliberately turned off
-func (s *Service) Disabled() bool {
-	return s.Configured() && !s.Enabled()
+func (s *Service) Disabled(def bool) bool {
+	if s.Configured() {
+		return !s.Enabled(def)
+	}
+	return !def
 }
 
 // Auth is 'auth_service' section of the config file
