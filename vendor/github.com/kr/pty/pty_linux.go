@@ -1,10 +1,16 @@
 package pty
 
+
 import (
 	"os"
 	"strconv"
 	"syscall"
 	"unsafe"
+)
+
+type (
+	_C_int int32
+	_C_uint uint32
 )
 
 func open() (pty, tty *os.File, err error) {

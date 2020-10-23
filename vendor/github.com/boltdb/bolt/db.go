@@ -12,6 +12,8 @@ import (
 	"unsafe"
 )
 
+const maxMapSize = 0xFFFFFFFFFFFF
+const maxAllocSize = 0x7FFFFFFF
 // The largest step that can be taken when remapping the mmap.
 const maxMmapStep = 1 << 30 // 1GB
 
