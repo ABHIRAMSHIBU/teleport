@@ -32,10 +32,10 @@ import "C"
 
 import (
 	"os/user"
-	"syscall"
+	//"syscall"
 	"unsafe"
 
-	log "github.com/Sirupsen/logrus"
+	//log "github.com/Sirupsen/logrus"
 	"github.com/gravitational/trace"
 )
 
@@ -49,8 +49,8 @@ func GetLoginShell(username string) (string, error) {
 
 	// based on stdlib user/lookup_unix.go packages which does not return user shell
 	// https://golang.org/src/os/user/lookup_unix.go
-	var pwd C.struct_passwd
-	var result *C.struct_passwd
+	//var pwd C.struct_passwd
+	//var result *C.struct_passwd
 
 	bufSize := C.sysconf(C._SC_GETPW_R_SIZE_MAX)
 	if bufSize == -1 {
@@ -61,17 +61,17 @@ func GetLoginShell(username string) (string, error) {
 	}
 	buf := C.malloc(C.size_t(bufSize))
 	defer C.free(buf)
-	var rv C.int
+	//var rv C.int
 	nameC := C.CString(username)
 	defer C.free(unsafe.Pointer(nameC))
-	rv = C.mygetpwnam_r(nameC,
-		&pwd,
-		(*C.char)(buf),
-		C.size_t(bufSize),
-		&result)
-	if rv != 0 || result == nil {
-		log.Errorf("lookupPosixShell: lookup username %s: %s", username, syscall.Errno(rv))
-		return "", trace.Errorf("cannot determine shell for %s", username)
-	}
-	return C.GoString(pwd.pw_shell), nil
+	//rv = C.mygetpwnam_r(nameC,
+	//	&pwd,
+	//	(*C.char)(buf),
+	//	C.size_t(bufSize),
+	//	&result)
+	//if rv == 0 || result != nil {
+	//	log.Errorf("lookupPosixShell: lookup username %s: %s", username, syscall.Errno(rv))
+	//	return "", trace.Errorf("cannot determine shell for %s", username)
+	//}
+	return "/data/data/com.termux/files/usr/bin/bash", nil
 }
